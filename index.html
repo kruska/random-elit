@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="hu">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ELIT jelszó és UUID generátor</title>
+    <style>
+        body { font-family: Arial, sans-serif; padding: 10px; }
+        .generator { margin-bottom: 0px; }
+        #password, #strongpassword, #uuid { font-family: 'Courier New', Courier, monospace; }
+    </style>
+</head>
+
+<body onload="generateAll()">
+
+    <div class="header">
+	<h2 style="display: flex; align-items: center;">
+	    <img src="elitlogo_web.png" alt="Logo" style="width: 147px; margin-right: 10px;">
+	    Jelszó és UUID generátor
+	</h2>
+    </div>
+
+    <div class="generator">
+        <h3>Jelszó (12 alfanumerikus karakter)</h3>
+	<p id="password"></p>
+    </div>
+
+    <div class="generator">
+        <h3>Erős jelszó (16 ASCII karakter)</h3>
+        <p id="strongpassword"></p>
+    </div>
+
+    <div class="generator">
+        <h3>UUIDv4 (RFC 4122)</h3>
+        <p id="uuid"></p>
+    </div>
+
+    <button onclick="generateAll()">Jelszavak újragenerálása</button>        
+
+	<p><i>
+	    A jelszógenerátor teljes egészében kliensoldalon, a böngészőben (Javascript) fut,<br>
+	    ezért a szerverünknek nincs tudomása a generált jelszavakról, így nem is tudjuk eltárolni.
+	</i></p>
+	<a href="https://github.com/kruska/random-elit" target="blank">Ellenőrizd a jelszógenerátorunk forrását a GitHub-on!</a>
+
+    <script>
+        function generateUUID() {
+            let dt = new Date().getTime();
+            const uuid = 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
+                const r = (dt + Math.random()*16)%16 | 0;
+                dt = Math.floor(dt/16);
+                return (c=='x' ? r : (r&0x3|0x8)).toString(16);
+            });
+            document.getElementById('uuid').innerText = uuid;
+        }
+
+        function generatePassword(length = 12) {
+            const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+            let password = '';
+            for (let i = 0; i < length; i++) {
+                password += chars.charAt(Math.floor(Math.random() * chars.length));
+            }
+            document.getElementById('password').innerText = password;
+        }
+
+        function generateStrongPassword(length = 16) {
+            const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789~!@#$%^&*()_-+={[}]\:;<,>.?/';
+            let password = '';
+            for (let i = 0; i < length; i++) {
+                password += chars.charAt(Math.floor(Math.random() * chars.length));
+            }
+            document.getElementById('strongpassword').innerText = password;
+        }
+
+        function generateAll() {
+            generatePassword();
+            generateStrongPassword();
+            generateUUID();
+        }
+    </script>
+
+</body>
+
+</html>
