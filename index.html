@@ -7,7 +7,7 @@
     <style>
         body { font-family: Arial, sans-serif; padding: 10px; }
         .generator { margin-bottom: 0px; }
-        #password, #strongpassword, #uuid { font-family: 'Courier New', Courier, monospace; }
+        #password8, #password12, #strongpassword, #uuid { font-family: 'Courier New', Courier, monospace; }
     </style>
 </head>
 
@@ -21,8 +21,9 @@
     </div>
 
     <div class="generator">
-        <h3>Jelszó (12 alfanumerikus karakter)</h3>
-	<p id="password"></p>
+        <h3>Jelszó (8/12 alfanumerikus karakter)</h3>
+	<p id="password8"></p>
+	<p id="password12"></p>
     </div>
 
     <div class="generator">
@@ -51,16 +52,16 @@
                 dt = Math.floor(dt/16);
                 return (c=='x' ? r : (r&0x3|0x8)).toString(16);
             });
-            document.getElementById('uuid').innerText = uuid;
+            return uuid;
         }
 
-        function generatePassword(length = 12) {
+        function generatePassword(length) {
             const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
             let password = '';
             for (let i = 0; i < length; i++) {
                 password += chars.charAt(Math.floor(Math.random() * chars.length));
             }
-            document.getElementById('password').innerText = password;
+            return password;
         }
 
         function generateStrongPassword(length = 16) {
@@ -69,13 +70,14 @@
             for (let i = 0; i < length; i++) {
                 password += chars.charAt(Math.floor(Math.random() * chars.length));
             }
-            document.getElementById('strongpassword').innerText = password;
+            return password;
         }
 
         function generateAll() {
-            generatePassword();
-            generateStrongPassword();
-            generateUUID();
+            document.getElementById('password8').innerText      = generatePassword(8);
+            document.getElementById('password12').innerText     = generatePassword(12);
+            document.getElementById('strongpassword').innerText = generateStrongPassword();
+            document.getElementById('uuid').innerText           = generateUUID();
         }
     </script>
 
