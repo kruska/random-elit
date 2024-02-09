@@ -7,7 +7,7 @@
     <style>
         body { font-family: Arial, sans-serif; padding: 10px; }
         .generator { margin-bottom: 0px; }
-        #password8, #password12, #strongpassword, #uuid { font-family: 'Courier New', Courier, monospace; }
+        #password8, #password12, #strongpassword, #passphrase, #uuid { font-family: 'Courier New', Courier, monospace; }
     </style>
 </head>
 
@@ -32,6 +32,11 @@
     </div>
 
     <div class="generator">
+        <h3>Passphrase</h3>
+        <p id="passphrase"></p>
+    </div>
+
+    <div class="generator">
         <h3>UUIDv4 (RFC 4122)</h3>
         <p id="uuid"></p>
     </div>
@@ -44,7 +49,10 @@
 	</i></p>
 	<a href="https://github.com/kruska/random-elit" target="blank">Ellenőrizd a jelszógenerátorunk forrását a GitHub-on!</a>
 
+    <script src="wordlist.js"></script>
+
     <script>
+
         function generateUUID() {
             let dt = new Date().getTime();
             const uuid = 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
@@ -73,12 +81,23 @@
             return password;
         }
 
+        function generatePassPhrase() {
+            let password = "";
+            for (let i = 0; i < 4; i++) {
+                password += wordlist[Math.floor(Math.random() * wordlist.length)];
+                if (i < 3) password += " ";
+            }
+            return password;
+        }
+
         function generateAll() {
             document.getElementById('password8').innerText      = generatePassword(8);
             document.getElementById('password12').innerText     = generatePassword(12);
             document.getElementById('strongpassword').innerText = generateStrongPassword();
             document.getElementById('uuid').innerText           = generateUUID();
+            document.getElementById('passphrase').innerText     = generatePassPhrase();
         }
+
     </script>
 
 </body>
